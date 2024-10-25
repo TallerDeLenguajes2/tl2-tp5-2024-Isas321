@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.Sqlite;
 
 namespace MiWebAPI.Controllers;
 
@@ -18,15 +19,36 @@ public class WeatherForecastController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
+    [HttpGet(Name = "GetProductos")]
+    public IEnumerable<Producto> Get()
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        List<Producto> productos = new List<Producto>();
+        var cadena = "Data Source = db/Tienda.db";
+        using( var sqlitecon = new SqliteConnection(cadena)){
+        // Importante crear y destruir!
+        sqlitecon.Open();
+        var consulta = @"SELECT * FROM Productos;";
+        SqliteCommand comand = new SqliteCommand(consulta, sqlitecon);
+        var reader = comand.ExecuteReader();
+        while(reader.Read())
         {
-            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToArray();
+            var producto = new Producto();
+            int Id = Convert.ToInt32(reader["idProducto"]);
+            string Nombre = reader["Descripcion"].ToString();
+            int Precio = Convert.ToInt32(reader["Precio"]);
+            productos.Add(producto);
+        }
+        sqlitecon.Close(); //Me aseguro que la BD queda liberada
+        }
+        return productos;
     }
+}
+
+
+public class Producto
+{
+    public int Id{get;set;}
+    public string Nombre{get;set;}
+    public int Precio{get;set;}
+
 }
