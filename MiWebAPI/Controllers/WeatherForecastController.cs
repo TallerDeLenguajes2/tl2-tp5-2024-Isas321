@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
+// using EspacioTienda;
 
 namespace MiWebAPI.Controllers;
 
@@ -33,9 +34,9 @@ public class WeatherForecastController : ControllerBase
         while(reader.Read())
         {
             var producto = new Producto();
-            int Id = Convert.ToInt32(reader["idProducto"]);
-            string Nombre = reader["Descripcion"].ToString();
-            int Precio = Convert.ToInt32(reader["Precio"]);
+            producto.Id = Convert.ToInt32(reader["idProducto"]);
+            producto.Nombre = reader["Descripcion"].ToString();
+            producto.Precio = Convert.ToInt32(reader["Precio"]);
             productos.Add(producto);
         }
         sqlitecon.Close(); //Me aseguro que la BD queda liberada
