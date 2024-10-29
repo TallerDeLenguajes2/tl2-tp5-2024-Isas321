@@ -8,9 +8,9 @@ namespace EspacioTienda{
 
     public Presupuesto(int idPresupuesto, string nombreDestinatario, DateFormat fechaCreacion)
     {
-        this.IdPresupuesto = idPresupuesto;
-        this.NombreDestinatario = nombreDestinatario;
-        this.FechaCreacion = fechaCreacion;
+        this.idPresupuesto = idPresupuesto;
+        this.nombreDestinatario = nombreDestinatario;
+        this.fechaCreacion = fechaCreacion;
     }
 
     public int IdPresupuesto { get => idPresupuesto; set => idPresupuesto = value; }
