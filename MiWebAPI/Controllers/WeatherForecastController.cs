@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
-// using EspacioTienda;
+using EspacioTienda;
 
 namespace MiWebAPI.Controllers;
 
@@ -33,23 +33,40 @@ public class WeatherForecastController : ControllerBase
         var reader = comand.ExecuteReader();
         while(reader.Read())
         {
-            var producto = new Producto();
-            producto.Id = Convert.ToInt32(reader["idProducto"]);
-            producto.Nombre = reader["Descripcion"].ToString();
-            producto.Precio = Convert.ToInt32(reader["Precio"]);
+            var Id = Convert.ToInt32(reader["idProducto"]);
+            var Nombre = reader["Descripcion"].ToString();
+            var Precio = Convert.ToInt32(reader["Precio"]);
+            var producto = new Producto(Id, Nombre, Precio);
             productos.Add(producto);
         }
         sqlitecon.Close(); //Me aseguro que la BD queda liberada
         }
         return productos;
     }
-}
 
 
-public class Producto
-{
-    public int Id{get;set;}
-    public string Nombre{get;set;}
-    public int Precio{get;set;}
-
+    
+    // [HttpGet(Name = "GetPresupuestos")]
+    // public IEnumerable<Presupuesto> Get()
+    // {
+    //     List<Producto> productos = new List<Producto>();
+    //     var cadena = "Data Source = db/Tienda.db";
+    //     using( var sqlitecon = new SqliteConnection(cadena)){
+    //     // Importante crear y destruir!
+    //     sqlitecon.Open();
+    //     var consulta = @"SELECT * FROM Productos;";
+    //     SqliteCommand comand = new SqliteCommand(consulta, sqlitecon);
+    //     var reader = comand.ExecuteReader();
+    //     while(reader.Read())
+    //     {
+    //         var Id = Convert.ToInt32(reader["idProducto"]);
+    //         var Nombre = reader["Descripcion"].ToString();
+    //         var Precio = Convert.ToInt32(reader["Precio"]);
+    //         var producto = new Producto(Id, Nombre, Precio);
+    //         productos.Add(producto);
+    //     }
+    //     sqlitecon.Close(); //Me aseguro que la BD queda liberada
+    //     }
+    //     return productos;
+    // }
 }
