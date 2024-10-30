@@ -77,4 +77,35 @@ public class WeatherForecastController : ControllerBase
         }
     return presupuestos;
     }
+
+
+    [HttpGet("GetPresupuestosDetalle", Name = "GetPresupuestosDetalle")]
+    public IEnumerable<PresupuestoDetalle> GetPresupuestosDetalle()
+    {
+        List<PresupuestoDetalle> presupuestosDetalle = new List<PresupuestoDetalle>();
+        var cadena = "Data Source = db/Tienda.db";
+        try
+        {
+            using (var sqlitecon = new SqliteConnection(cadena))
+            {
+                sqlitecon.Open();
+                var consulta = @"SELECT * FROM PresupuestosDetalle;";
+                SqliteCommand comand = new SqliteCommand(consulta, sqlitecon);
+                var reader = comand.ExecuteReader();
+                while (reader.Read())
+                {
+                    var IdPresupuesto = Convert.ToInt32(reader["idPresupuesto"]);
+                    var IdProducto = Convert.ToInt32(reader["idProducto"].ToString());
+                    var Cantidad = Convert.ToInt32(reader["Cantidad"]);
+                    var presupuestoDetalle = new PresupuestoDetalle(IdPresupuesto, IdProducto, Cantidad);
+                    presupuestosDetalle.Add(presupuestoDetalle);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error al obtener Detalles de Presupuestos: " + ex.Message);
+        }
+    return presupuestosDetalle;
+    }
 }
