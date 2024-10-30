@@ -4,9 +4,9 @@ namespace EspacioTienda{
   public class Presupuesto{
     private int idPresupuesto;
     private string nombreDestinatario;
-    private DateFormat fechaCreacion;
+    private DateTime fechaCreacion;
 
-    public Presupuesto(int idPresupuesto, string nombreDestinatario, DateFormat fechaCreacion)
+    public Presupuesto(int idPresupuesto, string nombreDestinatario, DateTime fechaCreacion)
     {
         this.idPresupuesto = idPresupuesto;
         this.nombreDestinatario = nombreDestinatario;
@@ -15,7 +15,7 @@ namespace EspacioTienda{
 
     public int IdPresupuesto { get => idPresupuesto; set => idPresupuesto = value; }
     public string NombreDestinatario { get => nombreDestinatario; set => nombreDestinatario = value; }
-    public DateFormat FechaCreacion { get => fechaCreacion; set => fechaCreacion = value; }
+    public DateTime FechaCreacion { get => fechaCreacion; set => fechaCreacion = value; }
     public string MostrarPresupuesto(){
       return $"{idPresupuesto} {nombreDestinatario} {fechaCreacion}";
     }
