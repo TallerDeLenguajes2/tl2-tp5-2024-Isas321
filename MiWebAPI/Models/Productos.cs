@@ -1,4 +1,4 @@
-namespace EspacioTienda
+namespace MiWebAPI.Models
 {
   public class Producto
   {
@@ -6,6 +6,10 @@ namespace EspacioTienda
         private string descripcion;
         private int precio;
 
+        public Producto()
+        {
+
+        }
         public Producto(int idProducto, string descripcion, int precio)
         {
             this.idProducto = idProducto;

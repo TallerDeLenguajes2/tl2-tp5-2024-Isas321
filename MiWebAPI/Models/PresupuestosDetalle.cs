@@ -1,4 +1,4 @@
-namespace EspacioTienda{
+namespace MiWebAPI.Models{
   public class PresupuestoDetalle{
     private int idPresupuesto;
     private int idProducto;

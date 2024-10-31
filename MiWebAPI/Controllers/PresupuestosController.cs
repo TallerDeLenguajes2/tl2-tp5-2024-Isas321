@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
-using EspacioTienda;
+using MiWebAPI.Models;
 using System.Net;
 namespace MiWebAPI.Controllers;
 

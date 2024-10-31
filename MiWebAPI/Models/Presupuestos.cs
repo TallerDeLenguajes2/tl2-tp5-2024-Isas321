@@ -1,6 +1,6 @@
 using Microsoft.VisualBasic;
 
-namespace EspacioTienda{
+namespace MiWebAPI.Models{
   public class Presupuesto{
     private int idPresupuesto;
     private string nombreDestinatario;
