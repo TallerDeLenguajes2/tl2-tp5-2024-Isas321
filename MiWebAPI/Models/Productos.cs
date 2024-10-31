@@ -1,15 +1,26 @@
 namespace MiWebAPI.Models
 {
-  public class Producto
-  {
+    // public class ProductoCreateModel
+    // {
+    //     public string Descripcion { get; set; }
+    //     public int Precio { get; set; }
+    // }
+    public class Producto
+    {
         private int idProducto;
         private string descripcion;
         private int precio;
 
-        public Producto()
-        {
+        // Constructor vacío
+        public Producto() { }
 
+        // Constructor sin ID (asumimos que la base de datos lo autoincrementará)
+        public Producto(string descripcion, int precio)
+        {
+            this.descripcion = descripcion;
+            this.precio = precio;
         }
+
         public Producto(int idProducto, string descripcion, int precio)
         {
             this.idProducto = idProducto;
@@ -17,13 +28,15 @@ namespace MiWebAPI.Models
             this.precio = precio;
         }
 
-        public int IdProducto { get => idProducto; }
-        public string Descripcion { get => descripcion; }
-        public int Precio { get => precio; }
+        // Propiedades
+        public int IdProducto { get => idProducto; set => idProducto = value; }
+        public string Descripcion { get => descripcion; set => descripcion = value; }
+        public int Precio { get => precio; set => precio = value; }
 
-
-    public string MostrarProducto(){
-      return $"\n\tIdProducto [id]: {idProducto}\n\tDescricion: {descripcion}\n\tPrecio: {precio}\n";
+        // Método para mostrar detalles del producto
+        public string MostrarProducto()
+        {
+            return $"\n\tIdProducto [id]: {idProducto}\n\tDescripcion: {descripcion}\n\tPrecio: {precio}\n";
+        }
     }
-  }
 }
