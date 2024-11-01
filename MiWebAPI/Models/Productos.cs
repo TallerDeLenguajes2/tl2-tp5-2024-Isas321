@@ -14,7 +14,7 @@ namespace MiWebAPI.Models
         // Constructor vacío
         public Producto() { }
 
-        // Constructor sin ID (asumimos que la base de datos lo autoincrementará)
+        // Constructor sin ID la base de datos lo autoincrementará
         public Producto(string descripcion, int precio)
         {
             this.descripcion = descripcion;

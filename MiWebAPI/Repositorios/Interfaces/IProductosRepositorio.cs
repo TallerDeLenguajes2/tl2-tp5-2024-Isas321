@@ -10,9 +10,9 @@ namespace MiWebAPI.Repositorios
   {
     public void Create(Producto producto);
     public List<Producto> GetAll();
-    public Producto GetById(int id);
-    public void Remove(int id);
-    public void Update(Producto director);
+    public Producto GetProductoPorId(int id);
+    public bool Remove(int id);
+    public void ActualizarNombrePorId(int id, string nuevoNombre);
 
   }
 }

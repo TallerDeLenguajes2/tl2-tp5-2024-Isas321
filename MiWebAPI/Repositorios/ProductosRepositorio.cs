@@ -46,35 +46,92 @@ namespace MiWebAPI.Repositorios
       }
       return productos;
     }
-    public Producto GetById(int id)
+    
+    public Producto GetProductoPorId(int id)
     {
-      var Id = -999;
-      var Nombre = "";
-      var Precio = 0;
-      var cadena = "Data Source = db/Tienda.db";
-      using( var sqlitecon = new SqliteConnection(cadena)){
-      // Importante crear y destruir!
-      sqlitecon.Open();
-      var consulta = @$"SELECT * FROM Productos WHERE idProducto is {id};";
-      SqliteCommand comand = new SqliteCommand(consulta, sqlitecon);
-      var reader = comand.ExecuteReader();
-      if(reader.Read()){
-          Id = Convert.ToInt32(reader["idProducto"]);
-          Nombre = reader["Descripcion"].ToString();
-          Precio = Convert.ToInt32(reader["Precio"]);
-      } 
-      var producto = new Producto(Nombre, Precio);
-      sqlitecon.Close(); //Me aseguro que la BD queda liberada
-      return (producto);
+        if (id <= 0)
+        {
+            throw new ArgumentException("El ID debe ser un número positivo", nameof(id));
+        }
+
+        var connectionString = "Data Source=db/Tienda.db";
+        using (var sqliteConnection = new SqliteConnection(connectionString))
+        {
+            sqliteConnection.Open();
+            const string query = "SELECT idProducto, Descripcion, Precio FROM Productos WHERE idProducto = @id";
+            
+            using (var command = new SqliteCommand(query, sqliteConnection))
+            {
+                // Usar un parámetro para evitar inyecciones SQL
+                command.Parameters.AddWithValue("@id", id);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        var productoId = reader.GetInt32(reader.GetOrdinal("idProducto"));
+                        var descripcion = reader["Descripcion"] as string ?? "Sin descripción";
+                        var precio = reader.GetInt32(reader.GetOrdinal("Precio"));
+                        
+                        return new Producto(productoId, descripcion, precio);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException($"No se encontró el producto con ID {id}");
+                    }
+                }
+            }     
+        }
+    }
+
+public bool Remove(int id)
+{
+    int rowsAffected;
+    var connectionString = "Data Source=db/Tienda.db";
+    using (var sqliteConnection = new SqliteConnection(connectionString))
+    {
+      const string query = "DELETE FROM Productos WHERE idProducto = @id";
+      using (var command = new SqliteCommand(query, sqliteConnection))
+      {
+          sqliteConnection.Open();
+          command.Parameters.AddWithValue("@id", id);
+          rowsAffected = command.ExecuteNonQuery();
+          sqliteConnection.Close();
+          return rowsAffected==1;
       }
     }
-    public void Remove(int id)
+}
+
+    public void ActualizarNombrePorId(int id, string descripcion)
     {
 
+    if (id <= 0)
+    {
+        throw new ArgumentException("El ID debe ser un número positivo", nameof(id));
     }
-    public void Update(Producto director)
-    {
 
+    var connectionString = "Data Source=db/Tienda.db";
+    using (var sqliteConnection = new SqliteConnection(connectionString))
+    {
+        sqliteConnection.Open();
+        const string query = "UPDATE Productos SET Descripcion = @descripcion WHERE idProducto = @id";
+        
+        using (var command = new SqliteCommand(query, sqliteConnection))
+        {
+            // Agregar el parámetro de ID para evitar inyección SQL
+            command.Parameters.AddWithValue("@descripcion", descripcion);
+            command.Parameters.AddWithValue("@id", id);
+
+            // Ejecutar el comando de eliminación
+            int rowsAffected = command.ExecuteNonQuery();
+
+            if (rowsAffected == 0)
+            {
+                // Manejo si no se encontró el producto para eliminar
+                  throw new KeyNotFoundException($"No se encontró ningún producto con ID {id} para eliminar.");
+            }
+        }
+    }
     }
   } 
 }
