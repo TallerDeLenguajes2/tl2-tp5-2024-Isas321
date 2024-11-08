@@ -32,4 +32,16 @@ public class PresupuestosController : ControllerBase
         presupuestosRepositorio.Crear(presupuesto);
         return Ok("Presupuesto creado");
     }
+
+    [HttpPut("PutPresupuesto/{id}", Name = "PutPresupuesto/{id}")]
+    public ActionResult PostPresupuesto(int id, Producto producto, int cantidad)
+    {
+        PresupuestosRepositorio presupuestosRepositorio = new PresupuestosRepositorio();
+        if(presupuestosRepositorio.Actualizar(id, producto, cantidad))
+            return Ok("Presupuesto creado");
+        else
+            return BadRequest("No se pudo actualizar el detalle de presupuesto");
+    }
+
+    //No se que es lo que pide mas adelante
 }
