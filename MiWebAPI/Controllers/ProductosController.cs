@@ -36,14 +36,16 @@ public class ProductosController : ControllerBase
   }
 
 
-  // [HttpPut("PutProductos/{id}", Name = "PutProductos/{id}")]
-  // public ActionResult PutProductos(int id)
-  // {
-  //   ProductosRepositorio productoRepositorio = new ProductosRepositorio();
-  //   productoRepositorio.ActualizarNombrePorId(id);
-
-  //   return Ok();
-  // }
+  [HttpPut("PutProductos/{id}", Name = "PutProductos/{id}")]
+  public ActionResult PutProductos(int id, Producto producto)
+  {
+    ProductosRepositorio productoRepositorio = new ProductosRepositorio();
+    if(productoRepositorio.ActualizarProducto(id, producto)){
+      return Ok("Modificado exitoso");
+    } else{
+      return BadRequest("No se pudo modificar");
+    }
+  }
 
   [HttpDelete("DeleteProductos/{id}", Name = "DeleteProductos/{id}")]
   public ActionResult DeleteProductos(int id)
