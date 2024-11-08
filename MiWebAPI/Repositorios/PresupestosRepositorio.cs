@@ -50,8 +50,6 @@ namespace MiWebAPI.Repositorios{
     }
 
 
-
-
     public Presupuesto ObtenerPresupuestoPorId(int id)
     {
       int idPresupuesto = 0;
@@ -79,9 +77,38 @@ namespace MiWebAPI.Repositorios{
       return new Presupuesto(idPresupuesto, NombreDestinatario, FechaCreacion);
     }
 
-    public void Actualizar(int id, Producto produco, int cantidad){
+    public bool Actualizar(int idPresupuesto, Producto producto, int cantidad)
+    {
+        if (idPresupuesto <= 0)
+        {
+            return false;
+        }
 
+        var idProducto = producto.IdProducto;
+
+        var connectionString = "Data Source=db/Tienda.db";
+        using (var sqliteConnection = new SqliteConnection(connectionString))
+        {
+            sqliteConnection.Open();
+            const string query = "UPDATE PresupuestosDetalle SET Cantidad = @cantidad WHERE idPresupuesto = @idPresupuesto AND idProducto = @idProducto;";
+            
+            using (var command = new SqliteCommand(query, sqliteConnection))
+            {
+                command.Parameters.AddWithValue("@idPresupuesto", idPresupuesto);
+                command.Parameters.AddWithValue("@idProducto", idProducto);
+                command.Parameters.AddWithValue("@cantidad", cantidad);
+
+                int rowsAffected = command.ExecuteNonQuery();
+
+                if (rowsAffected == 0)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
+
     public bool Eliminar(int id)
     {
         int rowsAffected;
