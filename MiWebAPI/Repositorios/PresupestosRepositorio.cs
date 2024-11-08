@@ -8,23 +8,29 @@ using Microsoft.Data.Sqlite;
 namespace MiWebAPI.Repositorios{
   public class PresupuestosRepositorio : IPresupuestosRepositorio
   {
-    public void Crear(Presupuesto presupuesto){
+    public void Crear(Presupuesto presupuesto)
+    {
+        var NombreDestinatario = Convert.ToString(presupuesto.NombreDestinatario);
+        var FechaCreacion = Convert.ToDateTime(presupuesto.FechaCreacion);
 
-      var id = presupuesto.IdPresupuesto;
-      var NombreDestinatario = presupuesto.NombreDestinatario;
-      var FechaCreacion = presupuesto.FechaCreacion;
+        var cadena = "Data Source=db/Tienda.db";
 
-      var cadena = "Data Source = db/Tienda.db";
-      using( var sqlitecon = new SqliteConnection(cadena)){
-        sqlitecon.Open();
-        var consulta = @"INSERT INTO Presupuesto (NombreDestinatario, FechaCreacion) VALUES (@NombreDestinatario, @FechaCreacion);";
-        SqliteCommand comand = new SqliteCommand(consulta, sqlitecon);
-        comand.Parameters.AddWithValue("@NombreDestinatario", NombreDestinatario);
-        comand.Parameters.AddWithValue("@FechaCreacion", FechaCreacion);
-        comand.ExecuteNonQuery();
-        sqlitecon.Close();
-      }
+        using (var sqlitecon = new SqliteConnection(cadena))
+        {
+            sqlitecon.Open();
+            var consulta = @"INSERT INTO Presupuestos (NombreDestinatario, FechaCreacion) 
+                            VALUES (@NombreDestinatario, @FechaCreacion);";
+
+            using (var comand = new SqliteCommand(consulta, sqlitecon))
+            {
+                comand.Parameters.AddWithValue("@NombreDestinatario", NombreDestinatario);
+                comand.Parameters.AddWithValue("@FechaCreacion", FechaCreacion);
+
+                comand.ExecuteNonQuery();
+            }
+        }
     }
+
 
 
     public List<Presupuesto> ObtenerTodos(){

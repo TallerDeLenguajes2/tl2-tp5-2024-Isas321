@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
 using MiWebAPI.Models;
+using MiWebAPI.Repositorios;
 using System.Net;
 namespace MiWebAPI.Controllers;
 
@@ -10,33 +11,25 @@ namespace MiWebAPI.Controllers;
 
 public class PresupuestosController : ControllerBase
 {
-      [HttpGet("GetPresupuestos", Name = "GetPresupuestos")]
-    public IEnumerable<Presupuesto> GetPresupuestos()
+    [HttpGet("GetPresupuestos", Name = "GetPresupuestos")]
+    public ActionResult<List<Presupuesto>> GetPresupuestos()
     {
-        List<Presupuesto> presupuestos = new List<Presupuesto>();
-        var cadena = "Data Source = db/Tienda.db";
-        try
-        {
-            using (var sqlitecon = new SqliteConnection(cadena))
-            {
-                sqlitecon.Open();
-                var consulta = @"SELECT * FROM Presupuestos;";
-                SqliteCommand comand = new SqliteCommand(consulta, sqlitecon);
-                var reader = comand.ExecuteReader();
-                while (reader.Read())
-                {
-                    var Id = Convert.ToInt32(reader["idPresupuesto"]);
-                    var NombreDestinatario = reader["NombreDestinatario"].ToString();
-                    var FechaCreacion = Convert.ToDateTime(reader["FechaCreacion"]);
-                    var presupuesto = new Presupuesto(Id, NombreDestinatario, FechaCreacion);
-                    presupuestos.Add(presupuesto);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Error al obtener presupuestos: " + ex.Message);
-        }
-    return presupuestos;
+        PresupuestosRepositorio presupuestosRepositorio = new PresupuestosRepositorio();
+        return presupuestosRepositorio.ObtenerTodos();
+    }
+
+    [HttpGet("GetPresupuesto/{id}", Name = "GetPresupuesto/{id}")]
+    public ActionResult<Presupuesto> GetPresupuestoPorId(int id)
+    {
+        PresupuestosRepositorio presupuestosRepositorio = new PresupuestosRepositorio();
+        return presupuestosRepositorio.ObtenerPresupuestoPorId(id);
+    }
+
+    [HttpPost("PostPresupuesto", Name = "PostPresupuesto")]
+    public ActionResult PostPresupuesto(Presupuesto presupuesto)
+    {
+        PresupuestosRepositorio presupuestosRepositorio = new PresupuestosRepositorio();
+        presupuestosRepositorio.Crear(presupuesto);
+        return Ok("Presupuesto creado");
     }
 }
