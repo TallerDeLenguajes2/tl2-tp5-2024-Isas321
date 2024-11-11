@@ -16,7 +16,19 @@ namespace MiWebAPI.Models{
         public int Cantidad { get => cantidad; set => cantidad = value; }
     
         public string MostrarPresupuesto(){
-      return $"{idPresupuesto} {idProducto} {cantidad}";
-    }
+            return $"{idPresupuesto} {idProducto} {cantidad}";
+        }
+
+    // private Producto producto;
+    // private int cantidad;
+
+    //     public PresupuestoDetalle(Producto producto, int cantidad)
+    //     {
+    //         this.Producto = producto;
+    //         this.Cantidad = cantidad;
+    //     }
+
+    //     public Producto Producto { get => producto; set => producto = value; }
+    //     public int Cantidad { get => cantidad; set => cantidad = value; }
     }
 }
