@@ -11,10 +11,10 @@ namespace MiWebAPI.Controllers;
 public class ProductosController : ControllerBase
 {
   [HttpPost("PostProductos", Name = "PostProductos")]
-  public ActionResult PostProductos(string descripcion, int precio)
+  public ActionResult PostProductos(int id, string descripcion, double precio)
   {
       ProductosRepositorio productosRepositorio = new ProductosRepositorio();
-      var producto = new Producto(descripcion, precio);
+      var producto = new Producto(id, descripcion, precio);
       productosRepositorio.Create(producto);
       return Ok("Producto creado correctamente");
   }
